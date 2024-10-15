@@ -38,6 +38,24 @@ app.get("/usuarios/:id",(req, res)=>{
 
 });//end point
 
+app.post("/usuarios", (req, res) => {
+
+    const { nombre, apellido, email } = req.body;
+    if (!nombre || nombre.trim() === '') {
+        return res.status(400).send({ error: "Nombre es un campo obligatorio" });
+    }
+    if (!apellido || apellido.trim() === '') {
+        return res.status(400).send({ error: "Apellido es un campo obligatorio" });
+    }
+    if (!email || email.trim() === '') {
+        return res.status(400).send({ error: "Email es un campo obligatorio" });
+    }
+
+    const emailExists = usuarios.some(usuario => usuario.email === email);
+    if (emailExists) {
+        return res.status(400).send({ error: "El email ya está en uso" });
+    }
+});
 
 app.listen(3000, ()=>{
     console.log("Servidor corriendo en http://localhost:3000")
