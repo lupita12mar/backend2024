@@ -57,6 +57,14 @@ app.post("/usuarios", (req, res) => {
     }
 });
 
+
+app.put ("/usuarios/:id", (req,res)=>{
+
+});
+
+app.patch ("/usuarios/:id", (req,res)=>{
+    
+});
 app.listen(3000, ()=>{
     console.log("Servidor corriendo en http://localhost:3000")
 });
