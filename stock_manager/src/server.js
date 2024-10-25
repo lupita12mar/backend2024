@@ -10,9 +10,13 @@ class Server{
 
         this.app.use(express.json());
         
+        this.middleweares();
         this.routes(); 
     }
 
+    middleweares(){
+        this.app.use(express.json());
+    }
 
 
     routes(){
