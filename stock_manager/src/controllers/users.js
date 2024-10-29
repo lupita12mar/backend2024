@@ -1,32 +1,97 @@
-const {request, response} = require('express');
+const{request, response}=require('express');
 
-const users = [
-    {id: 1, name: 'Lupita'},
+const users=[
+    {id: 1, name: 'Almir'},
     {id: 2, name: 'Marly'},
     {id: 3, name: 'Jet'},
 ];
 
-const getAll = (req = request, res = response) =>{
+const getAll=(req=request, res=response)=>{
     res.send(users);
-
 }
 
-const getById = (req = request, res = response) =>{
-    const {id} = req.params;
-    if (isNaN(id)){
+const getById=(req=request, res=response)=>{
+    const {id}=req.params;
+
+    if(isNaN(id)){
         res.status(400).send('Invalid ID');
         return;
-    }
+      }
 
-    const user = users.find(user => user.id === +id);
+      const user  = users.find(user => user.id === +id); 
 
-    if (!user){
-        res.status(404).send('user not found');
+      if(!user){
+        res.status(404).send('User not found');
         return;
-    }
+      }
 
-    res.send(user);
+      res.send(user);
 
 }
 
-module.exports = {getAll, getById};
+// TAREA que explico el profesor en clase
+// Crear un nuevo usuario
+const createUser = (req = request, res = response) => {
+  const {name} = req.body;
+
+  if (!name) {
+      res.status(400).send('Name is required');
+      return;
+  }
+  const user= users.find(user=>user.name===name);
+
+  if(user){
+    res.status(409).send('User alredy exists');
+    return;
+  }
+
+  users.push({id:users.length+1, name});
+  res.send('User created succesfully');
+};
+
+// Actualizar un usuario
+const updateUser = (req = request, res = response) => {
+  const {id} = req.params;
+  const {name} = req.body;
+
+  if (isNaN(id)) {
+      res.status(400).send('Invalid ID');
+      return;
+  }
+
+  const user = users.find(user => user.id === +id);
+
+  if (!user) {
+      res.status(404).send('User not found');
+      return;
+  }
+
+  users.forEach(user=>{
+    if(user.id===+id){
+        user.name=name;
+    }
+});
+res.send('user update succerfully');
+}
+
+// Eliminar un usuario por ID
+const deleteUser = (req = request, res = response) => {
+  const {id} = req.params;
+
+  if (isNaN(id)) {
+      res.status(400).send('Invalid ID');
+      return;
+  }
+
+  const user = users.find(user => user.id === +id);
+
+  if (!user) {
+    res.status(404).send('User not found');
+    return;
+}
+
+  users.splice(users.findIndex ((user)=>user.id===+id),1);
+  res.send('User deleted');
+};
+
+module.exports = { getAll, getById, createUser, updateUser, deleteUser };
