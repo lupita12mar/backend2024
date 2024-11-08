@@ -47,6 +47,8 @@ const getUserById=async(req=request, res=response)=>{
 
         res.send(user);
 
+
+
       }catch(error){
         res.status(500).send(error);
 
@@ -104,48 +106,73 @@ const createUser = async(req = request, res = response) => {
 }
 
 // Actualizar un usuario
-const updateUser = (req = request, res = response) => {
-  const {id} = req.params;
-  const {name} = req.body;
+const updateUser = async (req = request, res = response) => {
+  const { id } = req.params;
+  const { username } = req.body;
 
-  if (isNaN(id)) {
-      res.status(400).send('Invalid ID');
+  if (isNaN(id) || !username ) {
+      res.status(400).send('Invalid request');
       return;
   }
 
-  const user = users.find(user => user.id === +id);
+  let conn;
+  try {
+      conn = await pool.getConnection();
+      
+      // Verificar si el usuario existe
+      const user = await conn.query(usersQueries.getById, [+id]);
+      if (user.length === 0) {
+          res.status(404).send('not found');
+          return;
+      }
+      
+      // Actualizar usuario
+      const result = await conn.query(usersQueries.update, [username, +id]);
+      
+      if (result.affectedRows === 0) {
+          res.status(500).send(' not be updated');
+          return;
+      }
 
-  if (!user) {
-      res.status(404).send('User not found');
-      return;
+      res.send('User updated ');
+  } catch (error) {
+      res.status(500).send(error);
+  } finally {
+      if (conn) conn.end();
   }
-
-  users.forEach(user=>{
-    if(user.id===+id){
-        user.name=name;
-    }
-});
-res.send('user update succerfully');
-}
-
+};
 // Eliminar un usuario por ID
-const deleteUser = (req = request, res = response) => {
+const deleteUser = async(req = request, res = response) => {
   const {id} = req.params;
 
   if (isNaN(id)) {
       res.status(400).send('Invalid ID');
       return;
   }
+let conn;
+  try{
+    conn=await pool.getConnection();
+        const user=await conn.query(usersQueries.getById, [+id]);
+        if(user.length===0){
+          res.status(404).send('User not found');
+          return;
+        }
 
-  const user = users.find(user => user.id === +id);
+        const deleteUser = await conn.query(usersQueries.delete, [+id]);
+      
+      if (deleteUser.affectedRows === 0) {
+          res.status(500).send('User could not be deleted');
+          return;
+      }
+      res.send('User deleted ');
 
-  if (!user) {
-    res.status(404).send('User not found');
-    return;
-}
+  }catch(error){
+    res.status(500).send(error);
+  }finally{
+    if (conn) conn.end();
+  }
 
-  users.splice(users.findIndex ((user)=>user.id===+id),1);
-  res.send('User deleted');
+
 };
 
 module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser };

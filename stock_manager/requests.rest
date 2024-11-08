@@ -15,9 +15,12 @@ Content-Type: application/json
 
 ###
 PUT http://localhost:3000/users/1
+Content-Type: application/json
 
 {
-    "name":"MARLY"
+  "username": "jet"
+  
+  //para actualizar el usuario
 }
 
 ###
