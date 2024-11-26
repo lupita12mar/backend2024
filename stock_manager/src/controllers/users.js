@@ -1,6 +1,8 @@
 const{request, response}=require('express');
+const bcrypt = require('bcrypt');
 const pool = require('../db/connection');
 const { usersQueries } = require('../models/users');
+const saltRounds = 10;
 /*const users=[
     {id: 1, name: 'lady'},
     {id: 2, name: 'Sthefany'},
@@ -83,7 +85,10 @@ const createUser = async(req = request, res = response) => {
       return;
     }
 
-    const newUser=await conn.query(usersQueries.create, [username,password,email]);
+    const hashPassword= await bcrypt.hash(password, saltRounds);
+
+
+    const newUser=await conn.query(usersQueries.create, [username,hashPassword,email]);
 
     if(newUser.affecteRows===0){
       res.status(500).send('User not be created');
@@ -105,8 +110,78 @@ const createUser = async(req = request, res = response) => {
   //res.send('User created succesfully');
 }
 
-// Actualizar un usuario
+const loginUser = async (req = request, res = response) => {
+  const {username, password} = req.body;
+
+  if(!username || !password){
+    res.status(400).send('User and Password are mandatoty');
+    return;
+  }
+
+let conn;
+  try{
+    conn = await pool.getConnection();
+
+    const user = await conn.query(usersQueries.getByUsername, [username]);
+
+    if (user.length === 0){
+      res.status(404).send('Bad username or password');
+      return
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user[0].password);
+
+    if (!passwordMatch){
+      res.status(403).send('Bad username or password');
+    }
+
+    res.send('Loged in');
+
+  }catch(error){
+    res.status(500).send(error);
+  } finally{
+    if (conn) conn.end()
+  }
+}
+
 const updateUser = async (req = request, res = response) => {
+  const { id } = req.params;
+  const { username, password } = req.body;
+
+  if (isNaN(id) || !username || !password) {
+    res.status(400).send('Invalid request');
+    return;
+  }
+
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const user = await conn.query(usersQueries.getById, [+id]);
+    if (user.length === 0) {
+      res.status(404).send('User not found');
+      return;
+    }
+
+    const hashPassword = await bcrypt.hash(password, saltRounds);
+
+    const result = await conn.query(usersQueries.update, [username, hashPassword, +id]);
+
+    if (result.affectedRows === 0) {
+      res.status(500).send('User could not be updated');
+      return;
+    }
+
+    res.send('User updated successfully');
+  } catch (error) {
+    res.status(500).send(error);
+  } finally {
+    if (conn) conn.end();
+  }
+};
+
+// Actualizar un usuario
+/*const updateUser = async (req = request, res = response) => {
   const { id } = req.params;
   const { username } = req.body;
 
@@ -140,7 +215,8 @@ const updateUser = async (req = request, res = response) => {
   } finally {
       if (conn) conn.end();
   }
-};
+};*/
+
 // Eliminar un usuario por ID
 const deleteUser = async(req = request, res = response) => {
   const {id} = req.params;
@@ -175,4 +251,4 @@ let conn;
 
 };
 
-module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
+module.exports = { getAllUsers, getUserById, createUser, loginUser, updateUser, deleteUser };

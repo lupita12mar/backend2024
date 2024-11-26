@@ -1,26 +1,41 @@
 GET http://localhost:3000/users/
 ###
 
-GET http://localhost:3000/users/1
+GET http://localhost:3000/users/2
 ###
 
+//crear
 POST http://localhost:3000/users/
 Content-Type: application/json 
 
 {
-    "username": "Marly",
-  "password": "1234",
-  "email": "marly@gmail.com"
+  "username": "Denis",
+  "password": "bike123",
+  "email": "bike@gmail.com"
 }
 
-###
-PUT http://localhost:3000/users/1
+###actualizar
+PUT http://localhost:3000/users/4
 Content-Type: application/json
 
 {
-  "username": "jet"
+  "username": "Dennis",
+  "password": "246810"
+
   
   //para actualizar el usuario
+}
+
+###
+POST  http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+  "username": "Dennis",
+  "password": "246810"
+
+  
+  //para LOGIN
 }
 
 ###
