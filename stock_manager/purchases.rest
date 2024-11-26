@@ -1,0 +1,36 @@
+###Mostrar todas las compras 
+GET http://localhost:3000/purchases/
+
+###Mostrar compra por ID 
+GET http://localhost:3000/purchases/1
+
+### Agregar Compra 
+POST http://localhost:3000/purchases/ 
+Content-Type: application/json
+
+{
+"products_suppliers_id": 2, 
+"quantity": 900, 
+"purchase_date": "2024-11-20", 
+"payment_method": "cash", 
+"ticket": "ABC123", 
+"invoice": "INV001", 
+"price": 100
+}
+
+### Actualizar Compra 
+PUT http://localhost:3000/purchases/3 
+Content-Type: application/json
+
+{
+"products_suppliers_id": 1, 
+"quantity": 150, 
+"purchase_date": "2024-11-15", 
+"payment_method": "mix", 
+"ticket": "XYZ456", 
+"invoice": "INV002", 
+"price": 200
+}
+
+###Eliminar Compra 
+DELETE http://localhost:3000/purchases/2

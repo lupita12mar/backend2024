@@ -1,0 +1,34 @@
+###Mostrar todos los producto 
+GET http://localhost:3000/products/
+
+###Mostrar producto por ID 
+GET http://localhost:3000/products/1
+
+###Agregar producto 
+POST http://localhost:3000/products/ 
+Content-Type: application/json
+
+{
+"product": "Television",
+ "description": " 60 pulgadas",
+  "stock": 10, 
+  "measurement_unit": "piece", 
+  "price": 500.99, 
+  "discount": 20.00
+}
+
+### Actualizar producto 
+PUT http://localhost:3000/products/1 
+Content-Type: application/json
+
+{
+"product": "Celular Samsung", 
+"description": "Alto rendimiento", 
+"stock": 10, 
+"measurement_unit": "piece", 
+"price": 500.99, 
+"discount": 20.00
+}
+
+###Eliminar producto 
+DELETE http://localhost:3000/products/3

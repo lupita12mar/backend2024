@@ -1,0 +1,33 @@
+###Mostrar todos los proveedores 
+GET http://localhost:3000/suppliers/
+
+###Mostrar proveedores por ID 
+GET http://localhost:3000/suppliers/JRPR850330CA1
+
+### Agregar Proveedor 
+POST http://localhost:3000/suppliers/ 
+Content-Type: application/json
+
+{
+"rfc": "JRPR850330CA1", 
+"name": "Proveedor Guadalupe", 
+"description": "Proveedor de celulares", 
+"phone_number": "287153576", 
+"email": "guadalupe@proveedor.com", 
+"address": "Calle Rio, Ciudad Monterrey"
+}
+
+### Actualizar Proveedor 
+PUT http://localhost:3000/suppliers/JRPR850330CA1 
+Content-Type: application/json
+
+{
+"name": "Proveedor 2", 
+"description": "Proveedor de cables de ethernet", 
+"phone_number": "2871105393", 
+"email": "contacto@proveedorabc.com", 
+"address": "Col.Sureste, Ciudad Guadalajara"
+}
+
+###Eliminar Proveedor 
+DELETE http://localhost:3000/suppliers/JRPR850330CA1
