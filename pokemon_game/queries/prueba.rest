@@ -1,1 +1,28 @@
 GET http://localhost:3000/users
+
+###Mostar usuario por ID
+GET http://localhost:3000/users/2
+
+### Agregar
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "first_name":" Lupita",
+  "last_name": "Martinez",
+  "email": "lupita@gmail.com",
+  "password": "lupita123"
+}
+
+### EDITAR
+PUT http://localhost:3000/users/5
+Content-Type: application/json
+
+{
+  "first_name":" Marly",
+  "last_name": "Ignacio",
+  "email": "marly@gmail.com"
+}
+
+###Elimimar usuario
+DELETE http://localhost:3000/users/4
