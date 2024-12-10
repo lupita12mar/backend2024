@@ -1,0 +1,20 @@
+//GET http://localhost:3000/pokemons
+
+
+GET http://localhost:3000/pokemons
+###
+GET http://localhost:3000/pokemons/151
+###
+POST http://localhost:3000/pokemons
+Content-Type: application/json
+{
+    "name":"Dytto"
+}
+###
+PUT  http://localhost:3000/pokemons/152
+Content-Type: application/json
+{
+    "name":"Charmander"
+}
+###
+DELETE  http://localhost:3000/pokemons/151
