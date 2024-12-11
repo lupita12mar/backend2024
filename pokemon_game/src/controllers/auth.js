@@ -1,6 +1,11 @@
 const {request, response} = require ('express');
 const bcrypt = require('bcrypt');
-const { use } = require('../routes/auth');
+const jwt = require ('jsonwebtoken');
+const pool = require('../db/connection');
+const userQueries = require ('../models/users');
+require('dotenv').config();
+
+const secret = process.env. SECRET; //|| "1up1t4";
 
 const login = async (req = request, res = response) =>{
     const{email, password} = req.body;
@@ -12,8 +17,8 @@ const login = async (req = request, res = response) =>{
     }
 let conn;
 try{
-    conn =await createPool.getConnection();
-    const[user] = await conn.query (userQueries.getEmail, [email]);
+    conn =await pool.getConnection();
+    const[user] = await conn.query (userQueries.getByEmail, [email]);
 
     if (!user) {
         res.status(404).send({
@@ -31,9 +36,19 @@ if (!valid) {
     return;
 }
 
+const token = jwt.sign({
+    id:user.id, 
+isAdmin: user.isAdmin
+}, secret, {
+    expiresIn: "5m"
+});
+
+delete user.password;
+
 res.status(200).send ({
     message: "Successfully logged in",
-    user
+    user, 
+    token
 });
 
 }catch(err) {
@@ -43,7 +58,8 @@ res.status(200).send ({
     if (conn) conn.end();
 }
 
+}
+
 module.exports = {
     login
-}
 };

@@ -8,10 +8,10 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "first_name":" Lupita",
-  "last_name": "Martinez",
-  "email": "lupita@gmail.com",
-  "password": "lupita123"
+  "first_name":" Maria",
+  "last_name": "Ignacio",
+  "email": "mari@gmail.com",
+  "password": "m1227"
 }
 
 ### EDITAR
