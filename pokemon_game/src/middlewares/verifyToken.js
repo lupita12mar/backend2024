@@ -11,10 +11,12 @@ const token = header.split(" ")[1];
 if(!token){
     return res.status(401).send({message: "Token not provided"});
 }
+
 try{
 const payload=jwt.verify(token, secret);
+console.log(payload);
 req.id = payload.id;
-req.isAdmin = payload.isAdmin;
+req.is_admin = payload.is_admin;
 next();
 }catch(err){
     return res.status(403).send({message: "Token not valid"});

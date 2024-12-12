@@ -1,17 +1,22 @@
 GET http://localhost:3000/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaXNfYWRtaW4iOjEsImlhdCI6MTczNDAyMTU4MSwiZXhwIjoxNzM0MDIxODgxfQ.4LlpawdGj6PbQdPIyflnYO-Jg1PxPGmMtvo_U0GfYfM
 
 ###Mostar usuario por ID
-GET http://localhost:3000/users/1
+GET http://localhost:3000/users/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaXNfYWRtaW4iOjEsImlhdCI6MTczNDAyMTU4MSwiZXhwIjoxNzM0MDIxODgxfQ.4LlpawdGj6PbQdPIyflnYO-Jg1PxPGmMtvo_U0GfYfM
 
 ### Agregar
 POST http://localhost:3000/users
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaXNfYWRtaW4iOjAsImlhdCI6MTczNDAyMzM1NywiZXhwIjoxNzM0MDIzNjU3fQ.4rpfzVPaJ3MooYhpQWdpFwLiiQTbS1TsnsZMrGz3tV0
 
 {
-  "first_name":" Maria",
-  "last_name": "Ignacio",
-  "email": "mari@gmail.com",
-  "password": "m1227"
+  "first_name":" Logan",
+  "last_name": "Henderson",
+  "email": "logan@gmail.com",
+  "password": "H1229"
 }
 
 ### EDITAR

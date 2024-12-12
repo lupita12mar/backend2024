@@ -38,7 +38,7 @@ if (!valid) {
 
 const token = jwt.sign({
     id:user.id, 
-isAdmin: user.isAdmin
+is_admin: user.is_admin
 }, secret, {
     expiresIn: "5m"
 });
